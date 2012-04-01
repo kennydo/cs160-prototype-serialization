@@ -1,0 +1,17 @@
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\App.g.cs
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\cs160-serialization_MarkupCompile.cache
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\MainWindow.baml
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\cs160-serialization.g.resources
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\cs160_serialization.Properties.Resources.resources
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\bin\Debug\cs160-serialization.exe
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\bin\Debug\cs160-serialization.pdb
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\bin\Debug\Coding4Fun.Kinect.Wpf.dll
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\bin\Debug\Microsoft.Expression.Drawing.dll
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\cs160-serialization.exe
+C:\Users\Ken\documents\visual studio 2010\Projects\cs160-serialization\cs160-serialization\obj\x86\Debug\cs160-serialization.pdb
