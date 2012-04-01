@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using Microsoft.Kinect;
 using Coding4Fun.Kinect.Wpf;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace cs160_serialization
 {
@@ -44,7 +46,7 @@ namespace cs160_serialization
             if (DanceRoutine.saveAlreadyExists(fakeSongFile))
             {
                 Debug.WriteLine("save already exists.");
-               routine = DanceRoutine.load(fakeSongFile);
+               routine = DanceRoutine.load(DanceRoutine.saveDestinationName(fakeSongFile));
                String h = "hi";
                 return;
                // Debug.WriteLine("loaded save.");
@@ -129,7 +131,7 @@ namespace cs160_serialization
             }
             if (framesToRecord > 0)
             {
-                segment.updateImageFrames(e.OpenColorImageFrame());
+
                 segment.updateSkeletons(first);
                 framesToRecord--;
             }

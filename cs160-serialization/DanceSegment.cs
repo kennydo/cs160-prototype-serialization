@@ -24,6 +24,7 @@ namespace cs160_serialization
             public Dictionary<JointType, SerializableJoint> Joints;
             public SerializableSkeleton(Skeleton skeleton)
             {
+                Joints = new Dictionary<JointType, SerializableJoint>();
                 foreach (JointType jt in Enum.GetValues(typeof(JointType)))
                 {
                     Joints.Add(jt, (SerializableJoint) (object) skeleton.Joints[jt]);
@@ -45,7 +46,7 @@ namespace cs160_serialization
             skeletons.AddLast(skeleton);
         }
 
-        public void updateImageFrames(ImageFrame newFrame)
+        public void updateImages(ImageFrame newFrame)
         {
             images.AddLast(newFrame);
         }
