@@ -8,10 +8,11 @@ using System.Diagnostics;
 
 namespace cs160_serialization
 {
+    [Serializable]
     class DanceRoutine
     {
         // time is kept by the integer number of frames since the beginning
-
+      
         public String name;
         private String saveName;
         public Dictionary<DanceSegment, int> segments;
@@ -46,9 +47,11 @@ namespace cs160_serialization
         public Boolean save()
         {
             var formatter = new BinaryFormatter();
-            var fs = new FileStream(saveName, FileMode.Create);
             try{
-                formatter.Serialize(fs, this);
+                using (var fs = new FileStream(saveName, FileMode.Create))
+                {
+                    formatter.Serialize(fs, this);
+                }
             }
             catch (Exception e)
             {
@@ -61,10 +64,13 @@ namespace cs160_serialization
         static public DanceRoutine load(String saveFilename)
         {
             var formatter = new BinaryFormatter();
-            var fs = new FileStream(saveFilename, FileMode.Open);
+            
             try
             {
-                return (DanceRoutine)formatter.Deserialize(fs);
+                using (var fs = new FileStream(saveFilename, FileMode.Open))
+                {
+                    return (DanceRoutine)formatter.Deserialize(fs);
+                }
             }
             catch (Exception e)
             {

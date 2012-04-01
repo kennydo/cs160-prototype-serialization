@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
 using Coding4Fun.Kinect.Wpf;
+using System.Diagnostics;
 
 namespace cs160_serialization
 {
@@ -31,10 +32,29 @@ namespace cs160_serialization
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
         KinectSensor sensor;
 
+        private String fakeSongFile = "testFiles/test1.mp3";
+        private DanceRoutine routine;
+        private DanceSegment segment;
+        private int framesToRecord = 29 * 3;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //sign up for the event
             kinectSensorChooser.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser_KinectSensorChanged);
+            if (DanceRoutine.saveAlreadyExists(fakeSongFile))
+            {
+                Debug.WriteLine("save already exists.");
+               routine = DanceRoutine.load(fakeSongFile);
+               String h = "hi";
+                return;
+               // Debug.WriteLine("loaded save.");
+            } else {
+                Debug.WriteLine("creating new routine");
+                routine = new DanceRoutine(fakeSongFile);
+                Debug.WriteLine("created new routine");
+
+                segment = routine.addDanceSegment(0);
+            }
         }
 
         void kinectSensorChooser_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -107,7 +127,21 @@ namespace cs160_serialization
             {
                 return;
             }
-
+            if (framesToRecord > 0)
+            {
+                segment.updateImageFrames(e.OpenColorImageFrame());
+                segment.updateSkeletons(first);
+                framesToRecord--;
+            }
+            else
+            {
+                framesToRecord = -1;
+                Debug.WriteLine("recorded the necessary number of frames!");
+                Debug.WriteLine("will no longer record");
+                Debug.WriteLine("Saving...");
+                routine.save();
+                Debug.WriteLine("Saved.");
+            }
         }
         Skeleton GetFirstSkeleton(AllFramesReadyEventArgs e)
         {
