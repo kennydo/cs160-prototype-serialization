@@ -10,10 +10,12 @@ namespace cs160_serialization
 {
     class DanceRoutine
     {
-        private String name;
+        // time is kept by the integer number of frames since the beginning
+
+        public String name;
         private String saveName;
-        private Dictionary<DanceSegment, DateTime> segments;
-        private Dictionary<String, DateTime> comments;
+        public Dictionary<DanceSegment, int> segments;
+        public Dictionary<String, int> comments;
         // private Soundtrack soundtrack;
 
         public DanceRoutine(String filename){
@@ -26,8 +28,8 @@ namespace cs160_serialization
             }
             else
             {
-                segments = new Dictionary<DanceSegment, DateTime>();
-                comments = new Dictionary<string, DateTime>();
+                segments = new Dictionary<DanceSegment, int>();
+                comments = new Dictionary<string, int>();
             }
         }
 
@@ -69,6 +71,19 @@ namespace cs160_serialization
                 Debugger.Log(0, "Serialization", e.ToString());
             }
             return null;
+        }
+
+        public DanceSegment addDanceSegment(int startFrame)
+        {
+            var segment = new DanceSegment();
+            segments.Add(segment, startFrame);
+            return segment;
+        }
+
+        public String addComment(int frame, String comment)
+        {
+            comments.Add(comment, frame);
+            return comment;
         }
     }
 }
