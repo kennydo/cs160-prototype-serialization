@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
+using System.Windows.Media.Imaging;
 namespace cs160_serialization
 {
     [Serializable]
@@ -33,12 +34,12 @@ namespace cs160_serialization
         }
 
         private LinkedList<Skeleton> skeletons;
-        private LinkedList<ImageFrame> images;
+        private LinkedList<BitmapSource> images;
 
         public DanceSegment()
         {
             skeletons = new LinkedList<Skeleton>();
-            images = new LinkedList<ImageFrame>();
+            images = new LinkedList<BitmapSource>();
         }
 
         public void updateSkeletons(Skeleton skeleton)
@@ -46,7 +47,7 @@ namespace cs160_serialization
             skeletons.AddLast(skeleton);
         }
 
-        public void updateImages(ImageFrame newFrame)
+        public void updateImages(BitmapSource newFrame)
         {
             images.AddLast(newFrame);
         }
@@ -57,12 +58,12 @@ namespace cs160_serialization
             get { return skeletons.Count; }
         }
 
-        public ImageFrame getFirstFrame()
+        public BitmapSource getFirstFrame()
         {
             return images.First.Value;
         }
 
-        public ImageFrame getLastFrame()
+        public BitmapSource getLastFrame()
         {
             return images.Last.Value;
         }

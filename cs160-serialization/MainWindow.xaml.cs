@@ -124,14 +124,14 @@ namespace cs160_serialization
 
             //Get a skeleton
             Skeleton first = GetFirstSkeleton(e);
-
+            BitmapSource bitmap = GetBitmap(e);
             if (first == null)
             {
                 return;
             }
             if (framesToRecord > 0)
             {
-
+                segment.updateImages(bitmap);
                 segment.updateSkeletons(first);
                 framesToRecord--;
             }
@@ -145,6 +145,13 @@ namespace cs160_serialization
                 Debug.WriteLine("Saved.");
             }
         }
+
+        BitmapSource GetBitmap(AllFramesReadyEventArgs e)
+        {
+            ColorImageFrame colorFrame = e.OpenColorImageFrame();
+            return colorFrame.ToBitmapSource();
+        }
+
         Skeleton GetFirstSkeleton(AllFramesReadyEventArgs e)
         {
             using (SkeletonFrame skeletonFrameData = e.OpenSkeletonFrame())
