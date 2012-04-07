@@ -56,7 +56,7 @@ namespace cs160_serialization
               kinectSkeletonViewerCanvas.Visibility = Visibility.Hidden;
               var dispatcherTimer = new DispatcherTimer();
               dispatcherTimer.Tick += new EventHandler(videoPlayerTick);
-              dispatcherTimer.Interval = new TimeSpan(0, 0, 1/30);
+              dispatcherTimer.Interval = new TimeSpan(0, 0, 1/29);
               dispatcherTimer.Start();
 
               framesToRecord = -2;
@@ -72,6 +72,11 @@ namespace cs160_serialization
 
         private void videoPlayerTick(object sender, EventArgs e)
         {
+            for (int elementIndex = videoPlaybackCanvas.Children.Count - 1; elementIndex >= 0; elementIndex--)
+            {
+                var child = videoPlaybackCanvas.Children[elementIndex];
+                videoPlaybackCanvas.Children.Remove(child);
+            }
             if (videoCounter >= segment.length)
             {
                 (sender as DispatcherTimer).Stop();
