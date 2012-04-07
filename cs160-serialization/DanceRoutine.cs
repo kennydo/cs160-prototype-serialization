@@ -15,14 +15,16 @@ namespace cs160_serialization
       
         public String name;
         private String saveName;
+        public String saveDestinationFolder;
+        public Guid guid;
         public Dictionary<DanceSegment, int> segments;
         public Dictionary<String, int> comments;
         // private Soundtrack soundtrack;
 
         public DanceRoutine(String filename){
             name = filename;
-            saveName = saveDestinationName(filename);
-
+            saveName = getSaveDestinationName(filename);
+            saveDestinationFolder = getSaveDestinationFolder(filename);
             if (saveAlreadyExists(filename))
             {
                 throw new Exception("Should be loading. Save already exists.");
@@ -31,17 +33,25 @@ namespace cs160_serialization
             {
                 segments = new Dictionary<DanceSegment, int>();
                 comments = new Dictionary<string, int>();
+                guid = Guid.NewGuid();
+
+                Directory.CreateDirectory(saveDestinationFolder);
             }
         }
 
-        static public String saveDestinationName(String songFilename){
-            return Path.ChangeExtension(songFilename, ".dat");
+        static public String getSaveDestinationName(String songFilename){
+            return Path.Combine(getSaveDestinationFolder(songFilename), Path.GetFileNameWithoutExtension(songFilename) + ".dat");
         }
 
         static public Boolean saveAlreadyExists(String songFilename)
         {
-            String saveName = saveDestinationName(songFilename);
+            String saveName = getSaveDestinationName(songFilename);
             return File.Exists(saveName);
+        }
+
+        static public string getSaveDestinationFolder(String songFilename)
+        {
+            return @"" + songFilename;
         }
 
         public Boolean save()
@@ -81,7 +91,7 @@ namespace cs160_serialization
 
         public DanceSegment addDanceSegment(int startFrame)
         {
-            var segment = new DanceSegment();
+            var segment = new DanceSegment(this);
             segments.Add(segment, startFrame);
             return segment;
         }

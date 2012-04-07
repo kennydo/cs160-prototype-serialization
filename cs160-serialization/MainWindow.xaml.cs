@@ -16,6 +16,7 @@ using Coding4Fun.Kinect.Wpf;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace cs160_serialization
 {
@@ -45,18 +46,17 @@ namespace cs160_serialization
             kinectSensorChooser.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser_KinectSensorChanged);
             if (DanceRoutine.saveAlreadyExists(fakeSongFile))
             {
-                Debug.WriteLine("save already exists.");
-               routine = DanceRoutine.load(DanceRoutine.saveDestinationName(fakeSongFile));
-               String h = "hi";
+              Debug.WriteLine("save already exists.");
+              routine = DanceRoutine.load(DanceRoutine.getSaveDestinationName(fakeSongFile));
                 return;
                // Debug.WriteLine("loaded save.");
             } else {
                 Debug.WriteLine("creating new routine");
                 routine = new DanceRoutine(fakeSongFile);
                 Debug.WriteLine("created new routine");
-
-                segment = routine.addDanceSegment(0);
             }
+
+            segment = routine.addDanceSegment(0);
         }
 
         void kinectSensorChooser_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -124,13 +124,14 @@ namespace cs160_serialization
 
             //Get a skeleton
             Skeleton first = GetFirstSkeleton(e);
-            BitmapSource bitmap = GetBitmap(e);
+            BitmapSource bitmap = GetBitmap();
             if (first == null)
             {
                 return;
             }
             if (framesToRecord > 0)
             {
+                Debug.WriteLine("Recording frame..." + " with " + framesToRecord.ToString() + " to go!");
                 segment.updateImages(bitmap);
                 segment.updateSkeletons(first);
                 framesToRecord--;
@@ -143,13 +144,15 @@ namespace cs160_serialization
                 Debug.WriteLine("Saving...");
                 routine.save();
                 Debug.WriteLine("Saved.");
+                return;
             }
         }
 
-        BitmapSource GetBitmap(AllFramesReadyEventArgs e)
+        BitmapSource GetBitmap()
         {
-            ColorImageFrame colorFrame = e.OpenColorImageFrame();
-            return colorFrame.ToBitmapSource();
+            RenderTargetBitmap renderBitmap = new RenderTargetBitmap((int)kinectSkeletonViewerCanvas.ActualWidth, (int)kinectSkeletonViewerCanvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+            renderBitmap.Render(kinectSkeletonViewerCanvas);
+            return renderBitmap;
         }
 
         Skeleton GetFirstSkeleton(AllFramesReadyEventArgs e)

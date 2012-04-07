@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
 using System.Windows.Media.Imaging;
+using Coding4Fun.Kinect.Wpf;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Drawing;
 namespace cs160_serialization
 {
     [Serializable]
@@ -34,12 +38,16 @@ namespace cs160_serialization
         }
 
         private LinkedList<Skeleton> skeletons;
-        private LinkedList<BitmapSource> images;
+        private Guid guid;
+        private String saveDestinationFolder;
 
-        public DanceSegment()
+        public DanceSegment(DanceRoutine routine)
         {
             skeletons = new LinkedList<Skeleton>();
-            images = new LinkedList<BitmapSource>();
+            guid = Guid.NewGuid();
+
+            saveDestinationFolder = Path.Combine(routine.saveDestinationFolder, guid.ToString());
+            Directory.CreateDirectory(saveDestinationFolder);
         }
 
         public void updateSkeletons(Skeleton skeleton)
@@ -49,7 +57,13 @@ namespace cs160_serialization
 
         public void updateImages(BitmapSource newFrame)
         {
-            images.AddLast(newFrame);
+            newFrame.Save(imageFramePath(skeletons.Count), Coding4Fun.Kinect.Wpf.ImageFormat.Jpeg);
+        }
+
+        private String imageFramePath(int frameNumber)
+        {
+            // note that frameNumbers start at 1
+            return @"" + saveDestinationFolder + "\\" + frameNumber + ".jpg";
         }
 
         // returns the length in number of frames
@@ -58,14 +72,14 @@ namespace cs160_serialization
             get { return skeletons.Count; }
         }
 
-        public BitmapSource getFirstFrame()
+        public Bitmap getFirstFrame()
         {
-            return images.First.Value;
+            return new Bitmap(imageFramePath(0));
         }
 
-        public BitmapSource getLastFrame()
+        public Bitmap getLastFrame()
         {
-            return images.Last.Value;
+            return new Bitmap(imageFramePath(skeletons.Count));
         }
     }
 }
