@@ -19,6 +19,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Threading;
 
+
 namespace cs160_serialization
 {
     /// <summary>
@@ -36,7 +37,7 @@ namespace cs160_serialization
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
         KinectSensor sensor;
 
-        private String fakeSongFile = "testFiles/test1.mp3";
+        private String fakeSongFile = "test1.mp3";
         private DanceRoutine routine;
         private DanceSegment segment;
         private int framesToRecord = 29 * 3;
@@ -44,7 +45,9 @@ namespace cs160_serialization
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //sign up for the event
+            audioPlayerPlayForDuration(new TimeSpan(0, 1, 0), new TimeSpan(0, 0, 10));
+
+           //sign up for the event
             kinectSensorChooser.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser_KinectSensorChanged);
             if (DanceRoutine.saveAlreadyExists(fakeSongFile))
             {
@@ -66,8 +69,20 @@ namespace cs160_serialization
                 Debug.WriteLine("created new routine");
                 segment = routine.addDanceSegment(0);
             }
+        }
 
-            
+        private void audioPlayerPlayForDuration(TimeSpan startPosition, TimeSpan duration)
+        {
+            var dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler((object sender, EventArgs e) =>
+            {
+                songMediaElement.Stop();
+                (sender as DispatcherTimer).Stop();
+            });
+            dispatcherTimer.Interval = duration;
+            songMediaElement.Position = startPosition;
+            songMediaElement.Play();
+            dispatcherTimer.Start();
         }
 
         private void videoPlayerTick(object sender, EventArgs e)
