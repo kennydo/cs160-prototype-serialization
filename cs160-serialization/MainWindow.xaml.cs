@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows.Threading;
 
 namespace cs160_serialization
 {
@@ -39,6 +40,7 @@ namespace cs160_serialization
         private DanceRoutine routine;
         private DanceSegment segment;
         private int framesToRecord = 29 * 3;
+        public int videoCounter;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -48,15 +50,43 @@ namespace cs160_serialization
             {
               Debug.WriteLine("save already exists.");
               routine = DanceRoutine.load(DanceRoutine.getSaveDestinationName(fakeSongFile));
-                return;
-               // Debug.WriteLine("loaded save.");
+              segment = routine.segments[0];
+              Debug.WriteLine("Loaded segment " + segment);
+              videoCounter = 0;
+
+              kinectSkeletonViewerCanvas.Visibility = Visibility.Hidden;
+              var dispatcherTimer = new DispatcherTimer();
+              dispatcherTimer.Tick += new EventHandler(videoPlayerTick);
+              dispatcherTimer.Interval = new TimeSpan(0, 0, 1/30);
+              dispatcherTimer.Start();
+              
+               return;
             } else {
                 Debug.WriteLine("creating new routine");
                 routine = new DanceRoutine(fakeSongFile);
                 Debug.WriteLine("created new routine");
+                segment = routine.addDanceSegment(0);
             }
 
-            segment = routine.addDanceSegment(0);
+            
+        }
+
+        private void videoPlayerTick(object sender, EventArgs e)
+        {
+            if (videoCounter >= segment.length)
+            {
+                (sender as DispatcherTimer).Stop();
+                return;
+            }
+
+            var img = new System.Windows.Controls.Image();
+            img.Source = segment.getFrame(videoCounter);
+            videoPlaybackCanvas.Children.Add(img);
+
+            Canvas.SetTop(img, 0);
+            Canvas.SetLeft(img, 0);
+
+            videoCounter++;
         }
 
         void kinectSensorChooser_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -78,14 +108,6 @@ namespace cs160_serialization
             }
 
             var parameters = new TransformSmoothParameters
-            {
-                Smoothing = 0.3f,
-                Correction = 0.2f,
-                Prediction = 0.4f,
-                JitterRadius = 0.1f,
-                MaxDeviationRadius = 0.4f
-            };
-            parameters = new TransformSmoothParameters
             {
                 Smoothing = 0.3f,
                 Correction = 0.0f,

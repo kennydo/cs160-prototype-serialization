@@ -17,8 +17,8 @@ namespace cs160_serialization
         private String saveName;
         public String saveDestinationFolder;
         public Guid guid;
-        public Dictionary<DanceSegment, int> segments;
-        public Dictionary<String, int> comments;
+        public Dictionary<int, DanceSegment> segments;
+        public Dictionary<int, String> comments;
         // private Soundtrack soundtrack;
 
         public DanceRoutine(String filename){
@@ -31,8 +31,8 @@ namespace cs160_serialization
             }
             else
             {
-                segments = new Dictionary<DanceSegment, int>();
-                comments = new Dictionary<string, int>();
+                segments = new Dictionary<int, DanceSegment>();
+                comments = new Dictionary<int, String>();
                 guid = Guid.NewGuid();
 
                 Directory.CreateDirectory(saveDestinationFolder);
@@ -92,13 +92,13 @@ namespace cs160_serialization
         public DanceSegment addDanceSegment(int startFrame)
         {
             var segment = new DanceSegment(this);
-            segments.Add(segment, startFrame);
+            segments.Add(startFrame, segment);
             return segment;
         }
 
         public String addComment(int frame, String comment)
         {
-            comments.Add(comment, frame);
+            comments.Add(frame, comment);
             return comment;
         }
     }

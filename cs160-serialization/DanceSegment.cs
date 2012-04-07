@@ -8,6 +8,8 @@ using Coding4Fun.Kinect.Wpf;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Drawing;
+using System.Windows;
+using System.Diagnostics;
 namespace cs160_serialization
 {
     [Serializable]
@@ -72,14 +74,27 @@ namespace cs160_serialization
             get { return skeletons.Count; }
         }
 
-        public Bitmap getFirstFrame()
+        public BitmapSource getFrame(int frameNumber)
         {
-            return new Bitmap(imageFramePath(0));
+            Debug.WriteLine(frameNumber);
+            var bitmap = new Bitmap(imageFramePath(frameNumber));
+            System.Windows.Media.Imaging.BitmapSource bitmapSource =
+  System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+    bitmap.GetHbitmap(),
+    IntPtr.Zero,
+    Int32Rect.Empty,
+    System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+            return bitmapSource;
         }
 
-        public Bitmap getLastFrame()
+        public BitmapSource getFirstFrame()
         {
-            return new Bitmap(imageFramePath(skeletons.Count));
+            return getFrame(0);
+        }
+
+        public BitmapSource getLastFrame()
+        {
+            return getFrame(length);
         }
     }
 }
