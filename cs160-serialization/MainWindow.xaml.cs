@@ -53,14 +53,13 @@ namespace cs160_serialization
               segment = routine.segments[0];
               Debug.WriteLine("Loaded segment " + segment);
               videoCounter = 0;
-
               kinectSkeletonViewerCanvas.Visibility = Visibility.Hidden;
               var dispatcherTimer = new DispatcherTimer();
               dispatcherTimer.Tick += new EventHandler(videoPlayerTick);
               dispatcherTimer.Interval = new TimeSpan(0, 0, 1/30);
               dispatcherTimer.Start();
-              
-               return;
+
+              framesToRecord = -2;
             } else {
                 Debug.WriteLine("creating new routine");
                 routine = new DanceRoutine(fakeSongFile);
@@ -158,15 +157,17 @@ namespace cs160_serialization
                 segment.updateSkeletons(first);
                 framesToRecord--;
             }
-            else
+            else if (framesToRecord == -1)
             {
-                framesToRecord = -1;
                 Debug.WriteLine("recorded the necessary number of frames!");
                 Debug.WriteLine("will no longer record");
                 Debug.WriteLine("Saving...");
                 routine.save();
                 Debug.WriteLine("Saved.");
-                return;
+            }
+            else if (framesToRecord == -2)
+            {
+
             }
         }
 

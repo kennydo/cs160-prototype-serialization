@@ -76,7 +76,6 @@ namespace cs160_serialization
 
         public BitmapSource getFrame(int frameNumber)
         {
-            Debug.WriteLine(frameNumber);
             var bitmap = new Bitmap(imageFramePath(frameNumber));
             System.Windows.Media.Imaging.BitmapSource bitmapSource =
   System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
