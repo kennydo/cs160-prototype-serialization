@@ -162,17 +162,17 @@ namespace cs160_serialization
                 segment.updateSkeletons(first);
                 framesToRecord--;
             }
-            else if (framesToRecord == -1)
-            {
+            else if (framesToRecord == 0){
                 Debug.WriteLine("recorded the necessary number of frames!");
                 Debug.WriteLine("will no longer record");
                 Debug.WriteLine("Saving...");
                 routine.save();
                 Debug.WriteLine("Saved.");
+                framesToRecord = -2;
             }
             else if (framesToRecord == -2)
             {
-
+                sensor.AllFramesReady -= newSensor_AllFramesReady;
             }
         }
 
